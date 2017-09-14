@@ -358,6 +358,8 @@ public class Socket extends Emitter {
 
                         Packet msg = (Packet)args[0];
                         if (Packet.PONG.equals(msg.type) && "probe".equals(msg.data)) {
+                            final boolean needUpgrade = self.transport instanceof Polling;
+                            if (!needUpgrade) return;
                             logger.fine(String.format("probe transport '%s' pong", name));
                             self.upgrading = true;
                             self.emit(EVENT_UPGRADING, transport[0]);
